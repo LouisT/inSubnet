@@ -37,6 +37,8 @@
 In other words, I don't care what you do with it.
 However, if you make something interesting, I would like to check it out.</p>
 
+<p>Browser example at <a href="http://louist.github.io/inSubnet/example.html" title="Title">http://louist.github.io/inSubnet/example.html</a>.</p>
+
 <h2>
 <a name="functions" class="anchor" href="#functions"><span class="octicon octicon-link"></span></a>Functions:</h2>
 
@@ -45,10 +47,10 @@ However, if you make something interesting, I would like to check it out.</p>
 inSubnet.Auto(ip, subnet[, mask]) - Check to find out if &lt;ip&gt; is in &lt;subnet&gt;. Works with IPv4 and IPv6. Returns true or false.
      Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); OR inSubnet.Auto('1.2.3.4','1.2.0.0','16');
 
-inSubnet.IPv4(ip, subnet, mask) - Same as "Auto()" but for IPv4 only. - Returns true or false.
+inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns true or false.
      Examples: inSubnet.IPv4('1.2.3.4','1.2.0.0/16'); OR inSubnet.IPv4('1.2.3.4','1.2.0.0','16');
 
-inSubnet.IPv6(ip, subnet, mask) - Same as "Auto()" but for IPv6 only. - Returns true or false.
+inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns true or false.
      Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); OR inSubnet.IPv6('2400:cb00::123','2400:cb00::','32');
 
 inSubnet.isIP(string) - Check if &lt;string&gt; is an IP address. Works for IPv6 and IPv4. - Returns true or false.
@@ -67,11 +69,12 @@ inSubnet.expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
 <h2>
 <a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h2>
 
-<pre><code>1) Figure out what should be in the TODO and then write it! (Done?)
-2) Write a better README!
-3) Write a simple HTTP example for CloudFlare.
-4) Everything else!
-</code></pre>
+<ul>
+<li>[x] Figure out what should be in the TODO and then write it! (Done!?)</li>
+<li>[ ] Write a better README!</li>
+<li>[ ] Write a simple HTTP example for CloudFlare.</li>
+<li>[ ] Everything else!</li>
+</ul>
       </section>
     </div>
 
