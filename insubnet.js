@@ -4,27 +4,26 @@
 */
 Exporter(function (isNode) {
    var proto = {
-       version: '0.0.1',
+       version: '0.0.2',
        Auto: function (ip, subnet, mask) {
              if (!ip || !subnet) {
                 return false;
              };
-             var sm = this.getMask(subnet,mask),
-                 subnet = sm[0], 
-                 mask = sm[1];
-             if (mask && !isNaN(mask)) {
-                if (this.isIPv4(ip) && this.isIPv4(subnet)) {
-                   return this.IPv4(ip,subnet,mask);
-                } else if (this.isIPv6(ip) && this.isIPv6(subnet)) {
-                   return this.IPv6(ip,subnet,mask);
+             var sm = this.getMask(subnet,mask);
+             if (sm[0] && sm[1] && !isNaN(sm[1])) {
+                if (this.isIPv4(ip)) {
+                   return this.__IPv4(ip,sm[0],sm[1]);
+                 } else {
+                   return this.__IPv6(ip,sm[0],sm[1]);
                 };
              };
              return false;
        },
        IPv4: function (ip, subnet, mask) {
-             var sm = this.getMask(subnet,mask),
-                 subnet = sm[0], 
-                 mask = sm[1];
+             var sm = this.getMask(subnet,mask);
+             return this.__IPv4(ip,sm[0],sm[1]);
+       },
+       __IPv4: function (ip, subnet, mask) {
              if (this.isIPv4(ip) && this.isIPv4(subnet) && (mask && !isNaN(mask))) {
                 return ((this.toInt(ip)&-1<<(32-mask)) == this.toInt(subnet));
              };
@@ -34,9 +33,10 @@ Exporter(function (isNode) {
              return /^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})){3}$/.test(ip);
        },
        IPv6: function (ip, subnet, mask) {
-             var sm = this.getMask(subnet,mask),
-                 subnet = sm[0],
-                 mask = sm[1];
+             var sm = this.getMask(subnet,mask);
+             return this.__IPv6(ip,sm[0],sm[1]);
+       },
+       __IPv6: function (ip, subnet, mask) {
              if (this.isIPv6(ip) && this.isIPv6(subnet) && (mask && !isNaN(mask))) {
                 var o = Array.apply(null,Array(Math.floor(mask/16))).map(function(_){ return 0xffff; });
                 if (mask%16) {
@@ -49,7 +49,7 @@ Exporter(function (isNode) {
              return false;
        },
        isIPv6: function (ip) {
-             return this.__isIPv6(this.expand(ip));
+             return !!(this.expand(ip));
        },
        __isIPv6: function (ip) {
              return /^([0-9a-f]{4}|0)(\:([0-9a-f]{4}|0)){7}$/i.test(ip);
@@ -99,9 +99,13 @@ Exporter(function (isNode) {
   exports and window as that can be set by anything.
 */
 function Exporter (fn,plug) {
-         if (typeof exports === 'undefined' && window) {
-            window[plug] = fn(false);
+         // This just seems silly... There HAS to be a better way!
+         var isNode = (typeof process==='object' && process.toString()==='[object process]' && typeof exports!=='undefined');
+
+         // This also seems like there should be a better way...
+         if (isNode) {
+            module.exports = fn(isNode);
           } else {
-            module.exports = fn(true);
+            window[plug] = fn(isNode);
          };
 };
