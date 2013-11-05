@@ -1,0 +1,37 @@
+{
+    "name": "insubnet",
+    "version": "0.0.1",
+    "homepage": "http://louist.github.io/insubnet/",
+    "author": {
+        "name": "Louis T.",
+        "email": "louist@ltdev.im",
+        "url": "http://ltdev.im/"
+    },
+    "scripts": {
+        "test": "node test.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/LouisT/insubnet.git"
+    },
+    "bugs": {
+        "url": "https://github.com/LouisT/insubnet/issues"
+    },
+    "licenses": [
+        {
+          "type": "unlicensed",
+          "url": "http://unlicense.org/"
+        }
+    ],
+    "keywords": [
+        "ip",
+        "ipv4",
+        "ipv6",
+        "subnet",
+        "expander",
+        "validation"
+    ],
+    "description": "Check an IP(v4 or v6) against a subnet.",
+    "engine": "node => 0.6",
+    "main": "index.js"
+}
