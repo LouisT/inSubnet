@@ -23,11 +23,31 @@ function subTests () {
             pass++;
          } catch (e) { errors.push(e.message); };
          try {
+            assert(!inSubnet.Auto('192.168.255.32','2400:cb00::/32'),"192.168.255.32 should NOT be in 2400:cb00::/32.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Auto('2400:cb00::123','192.168.255.0/27'),"2400:cb00::123 should NOT be in 192.168.255.0/27.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
             assert(inSubnet.Auto('2400:cb00::123','2400:cb00::/32'),"2400:cb00::123 should be in 2400:cb00::/32.");
             pass++;
          } catch (e) { errors.push(e.message); };
          try {
             assert(!inSubnet.Auto('2500:cb00::123','2400:cb00::/32'),"2500:cb00::123 should NOT be in 2400:cb00::/32.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Auto('Not an IP','2400:cb00::/32'),"This isn't even a valid IP!");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Auto('2400:cb00::123','Not a Subnet!'),"This isn't even a valid Subnet!");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Auto('Not an IP','Not a Subnet!/32'),"This isn't even a valid IP OR Subnet!");
             pass++;
          } catch (e) { errors.push(e.message); };
          console.log("[Subnet Validation] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");

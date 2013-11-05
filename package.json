@@ -1,7 +1,7 @@
 {
     "name": "insubnet",
-    "version": "0.0.1",
-    "homepage": "http://louist.github.io/insubnet/",
+    "version": "0.0.2",
+    "homepage": "http://louist.github.io/inSubnet/",
     "author": {
         "name": "Louis T.",
         "email": "louist@ltdev.im",
@@ -12,10 +12,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/LouisT/insubnet.git"
+        "url": "git://github.com/LouisT/inSubnet.git"
     },
     "bugs": {
-        "url": "https://github.com/LouisT/insubnet/issues"
+        "url": "https://github.com/LouisT/inSubnet/issues"
     },
     "licenses": [
         {

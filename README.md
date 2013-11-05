@@ -1,4 +1,4 @@
-inSubnet (v0.0.1)
+inSubnet (v0.0.2)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -38,5 +38,5 @@ TODO:
 ------
 - [x] Figure out what should be in the TODO and then write it! (Done!?)
 - [ ] Write a better README!
-- [ ] Write a simple HTTP example for CloudFlare.
-- [ ] Everything else!
+- [x] Write a simple HTTP example for CloudFlare. (Look in ./examples/cloudflare.js)
+- [ ] Make "Exporter" better.
