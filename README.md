@@ -7,6 +7,8 @@ This project is [Unlicensed](http://unlicense.org/ "Title").
 In other words, I don't care what you do with it.
 However, if you make something interesting, I would like to check it out.
 
+Browser example at [http://louist.github.io/inSubnet/example.html](http://louist.github.io/inSubnet/example.html "Title").
+
 Functions:
 ------
     Examples in `./examples/` folder.
