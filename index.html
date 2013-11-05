@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>inSubnet by LouisT</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>inSubnet</h1>
+        <h2>Check an IP(v4 or v6) against a subnet.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/LouisT/inSubnet/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/LouisT/inSubnet/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/LouisT/inSubnet" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="insubnet-v001" class="anchor" href="#insubnet-v001"><span class="octicon octicon-link"></span></a>inSubnet (v0.0.1)</h1>
+
+<p>Install: npm install <a href="https://npmjs.org/package/insubnet" title="Title">insubnet</a></p>
+
+<p>This project is <a href="http://unlicense.org/" title="Title">Unlicensed</a>.
+In other words, I don't care what you do with it.
+However, if you make something interesting, I would like to check it out.</p>
+
+<h2>
+<a name="functions" class="anchor" href="#functions"><span class="octicon octicon-link"></span></a>Functions:</h2>
+
+<pre><code>Examples in `./examples/` folder.
+
+inSubnet.Auto(ip, subnet[, mask]) - Check to find out if &lt;ip&gt; is in &lt;subnet&gt;. Works with IPv4 and IPv6. Returns true or false.
+     Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); OR inSubnet.Auto('1.2.3.4','1.2.0.0','16');
+
+inSubnet.IPv4(ip, subnet, mask) - Same as "Auto()" but for IPv4 only. - Returns true or false.
+     Examples: inSubnet.IPv4('1.2.3.4','1.2.0.0/16'); OR inSubnet.IPv4('1.2.3.4','1.2.0.0','16');
+
+inSubnet.IPv6(ip, subnet, mask) - Same as "Auto()" but for IPv6 only. - Returns true or false.
+     Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); OR inSubnet.IPv6('2400:cb00::123','2400:cb00::','32');
+
+inSubnet.isIP(string) - Check if &lt;string&gt; is an IP address. Works for IPv6 and IPv4. - Returns true or false.
+     Examples: inSubnet.isIP("127.0.0.1"); OR inSubnet.isIP("afd::1");
+
+inSubnet.isIPv4(string) - Same as "isIP()" but for IPv4 only. - Returns true or false.
+     Example: inSubnet.isIPv4("127.0.0.1");
+
+inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns true or false.
+     Example: inSubnet.isIPv6("adf::1");
+
+inSubnet.expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
+     Example: inSubnet.expand("afd::1");
+</code></pre>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h2>
+
+<pre><code>1) Figure out what should be in the TODO and then write it! (Done?)
+2) Write a better README!
+3) Write a simple HTTP example for CloudFlare.
+4) Everything else!
+</code></pre>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
