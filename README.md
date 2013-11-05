@@ -16,10 +16,10 @@ Functions:
     inSubnet.Auto(ip, subnet[, mask]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns true or false.
          Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); OR inSubnet.Auto('1.2.3.4','1.2.0.0','16');
 
-    inSubnet.IPv4(ip, subnet, mask) - Same as "Auto()" but for IPv4 only. - Returns true or false.
+    inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns true or false.
          Examples: inSubnet.IPv4('1.2.3.4','1.2.0.0/16'); OR inSubnet.IPv4('1.2.3.4','1.2.0.0','16');
 
-    inSubnet.IPv6(ip, subnet, mask) - Same as "Auto()" but for IPv6 only. - Returns true or false.
+    inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns true or false.
          Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); OR inSubnet.IPv6('2400:cb00::123','2400:cb00::','32');
 
     inSubnet.isIP(string) - Check if <string> is an IP address. Works for IPv6 and IPv4. - Returns true or false.
@@ -36,7 +36,7 @@ Functions:
 
 TODO:
 ------
-    1) Figure out what should be in the TODO and then write it! (Done?)
-    2) Write a better README!
-    3) Write a simple HTTP example for CloudFlare.
-    4) Everything else!
+    [x] Figure out what should be in the TODO and then write it! (Done?)
+    [ ] Write a better README!
+    [ ] Write a simple HTTP example for CloudFlare.
+    [ ] Everything else!
