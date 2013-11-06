@@ -1,4 +1,4 @@
-inSubnet (v0.0.2)
+inSubnet (v0.0.3)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -31,8 +31,15 @@ Functions:
     inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns true or false.
          Example: inSubnet.isIPv6("adf::1");
 
-    inSubnet.expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
+    inSubnet.Expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
          Example: inSubnet.expand("afd::1");
+
+    inSubnet.Validate(ip) - Check against an array of subnets set by "setSubnet()". - Returns true or false.
+         Example: inSubnet.Validate("192.168.1.3");
+
+    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()". - Returns true or false.
+         Example: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]);
+
 
 TODO:
 ------

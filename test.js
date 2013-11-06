@@ -94,5 +94,40 @@ function ipTests () {
          console.log("[IP Validation] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
 };
+function setTests () {
+         // CloudFlare Subnets! (https://www.cloudflare.com/ips)
+         var subs = ['204.93.240.0/24','204.93.177.0/24','199.27.128.0/21','173.245.48.0/20','103.21.244.0/22',
+                     '103.22.200.0/22','103.31.4.0/22','141.101.64.0/18','108.162.192.0/18','190.93.240.0/20',
+                     '188.114.96.0/20','197.234.240.0/22','198.41.128.0/17','162.158.0.0/15','2400:cb00::/32',
+                     '2606:4700::/32','2803:f800::/32','2405:b500::/32','2405:8100::/32'],
+             errors = [], pass = 0;
+         try {
+            assert(!inSubnet.Validate(),"Empty \"Validate()\" should return false.");
+            pass++;
+         } catch (e) { errors.push(e.message); }
+         try {
+            assert(inSubnet.setSubnets(subs),"Empty \"setSubnets([subs])\" should return true.");
+            pass++;
+         } catch (e) { errors.push(e.message); }
+         try {
+            assert(inSubnet.Validate('204.93.240.15'),"204.93.240.15 should be in subnet array.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Validate('204.93.240.256'),"204.93.240.256 should NOT be in subnet array.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(inSubnet.Validate('2405:b500::123'),"2405:b500::123 should be in subnet array.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Validate('2406:b500::123'),"2406:b500::123 should NOT be in subnet array.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         console.log("[Subnet Array Validation] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
+         errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
+};
 subTests();
+setTests();
 ipTests();
