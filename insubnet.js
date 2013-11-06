@@ -58,7 +58,7 @@ Exporter(function (isNode) {
              return (this.isIPv4(ip)||this.isIPv6(ip));
        },
        Validate: function (ip) {
-              if (this.subnets && this.isIP(ip) && (!!(this.subnets.ipv4.length)||!!(this.subnets.ipv6.length))) {
+              if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?"ipv4":"ipv6"].length))) {
                  var subs = this.subnets[(this.isIPv4(ip)?"ipv4":"ipv6")];
                  for (var num in subs) {
                      if (this.Auto(ip,subs[num])) {
