@@ -1,4 +1,4 @@
-inSubnet (v0.0.3)
+inSubnet (v0.0.4)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -13,37 +13,55 @@ Functions:
 ------
     Examples in `./examples/` folder.
 
-    inSubnet.Auto(ip, subnet[, mask]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns true or false.
-         Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); OR inSubnet.Auto('1.2.3.4','1.2.0.0','16');
+    inSubnet.Auto(ip, subnet[, mask]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns boolean.
+         Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); // true
+                   inSubnet.Auto('1.2.3.4','1.2.0.0','16'); // true
+                   inSubnet.Auto('1.4.3.4','1.2.0.0','16'); // false
 
-    inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns true or false.
-         Examples: inSubnet.IPv4('1.2.3.4','1.2.0.0/16'); OR inSubnet.IPv4('1.2.3.4','1.2.0.0','16');
+    inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
+         Examples: See "Auto()" examples.
 
-    inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns true or false.
-         Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); OR inSubnet.IPv6('2400:cb00::123','2400:cb00::','32');
+    inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns boolean.
+         Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); // true
+                   inSubnet.IPv6('2400:cb00::123','2400:cb00::','32'); // true
+                   inSubnet.IPv6('2500:cb00::123','2400:cb00::','32'); // false
 
-    inSubnet.isIP(string) - Check if <string> is an IP address. Works for IPv6 and IPv4. - Returns true or false.
-         Examples: inSubnet.isIP("127.0.0.1"); OR inSubnet.isIP("afd::1");
+    inSubnet.isIP(string) - Check if <string> is an IP address. Works for IPv6 and IPv4. - Returns boolean.
+         Examples: inSubnet.isIP("127.0.0.1"); // true
+                   inSubnet.isIP("afd::1"); // true
+                   inSubnet.isIP("asd::1"); // false
  
-    inSubnet.isIPv4(string) - Same as "isIP()" but for IPv4 only. - Returns true or false.
-         Example: inSubnet.isIPv4("127.0.0.1");
+    inSubnet.isIPv4(string) - Same as "isIP()" but for IPv4 only. - Returns boolean.
+         Example: inSubnet.isIPv4("127.0.0.1"); // true
+                  inSubnet.isIPv4("127.0.0.256"); // false
 
-    inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns true or false.
-         Example: inSubnet.isIPv6("adf::1");
+    inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns boolean.
+         Example: inSubnet.isIPv6("adf::1"); // true
+                  inSubnet.isIPv6("asf::1"); // false
 
     inSubnet.Expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
-         Example: inSubnet.expand("afd::1");
+         Examples: inSubnet.Expand("afd::1"); // 0afd:0000:0000:0000:0000:0000:0000:0001
+                   inSubnet.Expand("2001:4860:4860::8888"); // 2001:4860:4860:0000:0000:0000:0000:8888
 
-    inSubnet.Validate(ip) - Check against an array of subnets set by "setSubnet()". - Returns true or false.
-         Example: inSubnet.Validate("192.168.1.3");
+    inSubnet.Validate(ip[, subnets]) - Check <ip> or an Array of IPs against an array of subnets set by "setSubnets()".
+                                      If <subnets> is passed, uses "setSubnets()". - Returns boolean or an Array of boolean.
+         Examples: inSubnet.Validate('127.0.0.1',['127.0.0.1/32','adf::1/32']);  // true
+                   inSubnet.Validate(['127.0.0.1','127.0.0.2'],['127.0.0.1/32']); // [true,false]
 
-    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()". - Returns true or false.
-         Example: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]);
+    inSubnet.Filter(array[, subnets]) - Filter an Array of IP addresses against subnets set with "setSubnets()" - Returns an Array of valid IPs.
+                                       If <subnets> is passed, uses "setSubnets()". - Returns IP or false, Array of valid IPs.
+         Examples: inSubnet.Filter(['127.0.0.1','adf::1','127.0.0.2'],['127.0.0.1/32','adf::1/32']); // ['127.0.0.1','adf::1']
+                   inSubnet.Filter('127.0.0.1',['127.0.0.1/32','adf::1/32']); // 127.0.0.1
+                   inSubnet.Filter('127.0.0.2',['127.0.0.1/32','adf::1/32']); // false
 
+    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()".
+                                   WARNING: Overrides all previous "setSubnets()" calls. - Returns boolean.
+         Example: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
+                  inSubnet.setSubnets(["not","subnets","subnet/32"]); // false
 
 TODO:
 ------
 - [x] Figure out what should be in the TODO and then write it! (Done!?)
-- [ ] Write a better README!
+- [ ] Write a better README! (Is this happening?)
 - [x] Write a simple HTTP example for CloudFlare. (Look in ./examples/cloudflare.js)
 - [ ] Make "Exporter" better.
