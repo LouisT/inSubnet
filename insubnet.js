@@ -4,18 +4,14 @@
 */
 Exporter(function (isNode) {
    var proto = {
-       version: '0.0.3',
+       version: '0.0.4',
        Auto: function (ip, subnet, prefix) {
              if (!ip || !subnet) {
                 return false;
              };
              var sm = this.getPrefix(subnet,prefix);
              if (sm[0] && sm[1] && !isNaN(sm[1])) {
-                if (this.isIPv4(ip)) {
-                   return this.__IPv4(ip,sm[0],sm[1]);
-                 } else {
-                   return this.__IPv6(ip,sm[0],sm[1]);
-                };
+                return this[this.isIPv4(ip)?'__IPv4':'__IPv6'](ip,sm[0],sm[1]);
              };
              return false;
        },
@@ -57,20 +53,40 @@ Exporter(function (isNode) {
        isIP: function (ip) {
              return (this.isIPv4(ip)||this.isIPv6(ip));
        },
-       Validate: function (ip) {
-              if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?"ipv4":"ipv6"].length))) {
-                 var subs = this.subnets[(this.isIPv4(ip)?"ipv4":"ipv6")];
-                 for (var num in subs) {
-                     if (this.Auto(ip,subs[num])) {
-                        return true;
-                     };
-                 };
-              };
-              return false;
+       Filter: function (ip, subnets) {
+             this.setSubnets(subnets);
+             if (Array.isArray(ip)){ 
+                return ip.filter(function(ip) {
+                   return this.__Validate(ip);
+                },this);
+              } else {
+                return (this.__Validate(ip)?ip:false);
+             };
+       },
+       Validate: function (ip, subnets) {
+             this.setSubnets(subnets);
+             if (Array.isArray(ip)){
+                return ip.map(function(ip) {
+                   return this.__Validate(ip);
+                },this);
+              } else {
+                return this.__Validate(ip);
+             };
+       },
+       __Validate: function (ip) {
+             if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?"ipv4":"ipv6"].length))) {
+                var subs = this.subnets[(this.isIPv4(ip)?"ipv4":"ipv6")];
+                for (var num in subs) {
+                    if (this.Auto(ip,subs[num])) {
+                       return true;
+                    };
+                };
+             };
+             return false;
        },
        setSubnets: function (subnets) {
-             this.subnets = {ipv4:[],ipv6:[]};
              if (Array.isArray(subnets)) {
+                this.subnets = {ipv4:[],ipv6:[]};
                 for (var num in subnets) {
                     var subnet = subnets[num];
                     if (/\/(\d+){1,3}$/.test(subnet)) {
