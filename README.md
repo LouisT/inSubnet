@@ -32,12 +32,12 @@ Functions:
                    inSubnet.isIP("asd::1"); // false
  
     inSubnet.isIPv4(string) - Same as "isIP()" but for IPv4 only. - Returns boolean.
-         Example: inSubnet.isIPv4("127.0.0.1"); // true
-                  inSubnet.isIPv4("127.0.0.256"); // false
+         Examples: inSubnet.isIPv4("127.0.0.1"); // true
+                   inSubnet.isIPv4("127.0.0.256"); // false
 
     inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns boolean.
-         Example: inSubnet.isIPv6("adf::1"); // true
-                  inSubnet.isIPv6("asf::1"); // false
+         Examples: inSubnet.isIPv6("adf::1"); // true
+                   inSubnet.isIPv6("asf::1"); // false
 
     inSubnet.Expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
          Examples: inSubnet.Expand("afd::1"); // 0afd:0000:0000:0000:0000:0000:0000:0001
@@ -56,8 +56,8 @@ Functions:
 
     inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()".
                                    WARNING: Overrides all previous "setSubnets()" calls. - Returns boolean.
-         Example: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
-                  inSubnet.setSubnets(["not","subnets","subnet/32"]); // false
+         Examples: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
+                   inSubnet.setSubnets(["not","subnets","subnet/32"]); // false
 
 TODO:
 ------
