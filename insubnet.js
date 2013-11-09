@@ -165,7 +165,7 @@ Exporter(function (isNode) {
 */
 function Exporter (fn,plug) {
          // This just seems silly... There HAS to be a better way!
-         var isNode = (typeof process==='object' && process.toString()==='[object process]' && typeof exports!=='undefined');
+         var isNode = (typeof window === 'undefined' && typeof process==='object' && process.toString()==='[object process]' && typeof exports!=='undefined');
 
          // This also seems like there should be a better way...
          if (isNode) {
