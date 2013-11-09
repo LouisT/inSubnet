@@ -51,7 +51,8 @@ function subTests () {
             pass++;
          } catch (e) { errors.push(e.message); };
          console.log("[Subnet String Tests] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
-         errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
+         errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });   
+         return !(errors.length);
 };
 function ipTests () {
          var errors = [], pass = 0;
@@ -101,6 +102,7 @@ function ipTests () {
          } catch (e) { errors.push(e.message); };
          console.log("[IP Validation Tests] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
+         return !(errors.length);
 };
 function arrTests () {
          // CloudFlare Subnets! (https://www.cloudflare.com/ips)
@@ -152,7 +154,8 @@ function arrTests () {
          } catch (e) { errors.push(e.message); };
          console.log("[Subnet Array Tests] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
+         return !(errors.length);
 };
-subTests();
-arrTests();
-ipTests();
+if (!subTests() || !arrTests() || !ipTests()) {
+   process.exit(1);
+};
