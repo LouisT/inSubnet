@@ -4,20 +4,20 @@
 */
 Exporter(function (isNode) {
    var proto = {
-       version: '0.0.4',
+       version: '0.0.5',
        Auto: function (ip, subnet, prefix) {
              if (!ip || !subnet) {
                 return false;
              };
-             var sm = this.getPrefix(subnet,prefix);
-             if (sm[0] && sm[1] && !isNaN(sm[1])) {
-                return this[this.isIPv4(ip)?'__IPv4':'__IPv6'](ip,sm[0],sm[1]);
+             var sp = this.getPrefix(subnet,prefix);
+             if (this.isIP(sp[0]) && sp[1] && !isNaN(sp[1])) {
+                return this[this.isIPv4(ip)?'__IPv4':'__IPv6'](ip,sp[0],sp[1]);
              };
              return false;
        },
        IPv4: function (ip, subnet, prefix) {
-             var sm = this.getPrefix(subnet,prefix);
-             return this.__IPv4(ip,sm[0],sm[1]);
+             var sp = this.getPrefix(subnet,prefix);
+             return this.__IPv4(ip,sp[0],sp[1]);
        },
        __IPv4: function (ip, subnet, prefix) {
              if (this.isIPv4(ip) && this.isIPv4(subnet) && (prefix && !isNaN(prefix))) {
@@ -29,8 +29,8 @@ Exporter(function (isNode) {
              return /^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})){3}$/.test(ip);
        },
        IPv6: function (ip, subnet, prefix) {
-             var sm = this.getPrefix(subnet,prefix);
-             return this.__IPv6(ip,sm[0],sm[1]);
+             var sp = this.getPrefix(subnet,prefix);
+             return this.__IPv6(ip,sp[0],sp[1]);
        },
        __IPv6: function (ip, subnet, prefix) {
              if (this.isIPv6(ip) && this.isIPv6(subnet) && (prefix && !isNaN(prefix))) {
@@ -52,6 +52,33 @@ Exporter(function (isNode) {
        },
        isIP: function (ip) {
              return (this.isIPv4(ip)||this.isIPv6(ip));
+       },
+       Clean: function (ips, ff, sf) {
+             if (Array.isArray(ips)) {
+                var v4 = [],
+                    v6 = [],
+                    ff = ff||function(x){ return x; };
+                ips.map(function(ip) {
+                    if (/\/(\d+){1,3}$/.test(ip)) {
+                       var sp = this.getPrefix(ip);
+                       if (this.isIP(sp[0]) && sp[1] && !isNaN(sp[1])) {
+                          var ip = (this.isIPv4(sp[0])?sp[0]:this.Expand(sp[0])),
+                              p = ip+'/'+sp[1];
+                       };
+                     } else {
+                       var ip = p = (this.isIPv4(ip)?ip:this.Expand(ip));
+                    };
+                    if (this.isIP(ip)) {
+                       (this.isIPv4(ip)?v4:v6).push(p);
+                    };
+                },this);
+                var ret = {
+                    ipv4: v4.filter(ff,this).sort(sf),
+                    ipv6: v6.filter(ff,this).sort(sf)
+                };
+                return ((!!(ret.ipv4.length)||!!(ret.ipv6.length))?ret:false);
+             };
+             return false;
        },
        Filter: function (ip, subnets) {
              this.setSubnets(subnets);
@@ -77,7 +104,7 @@ Exporter(function (isNode) {
              if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?"ipv4":"ipv6"].length))) {
                 var subs = this.subnets[(this.isIPv4(ip)?"ipv4":"ipv6")];
                 for (var num in subs) {
-                    if (this.Auto(ip,subs[num])) {
+                    if (/\/(\d+){1,3}$/.test(subs[num]) && this.Auto(ip,subs[num])) {
                        return true;
                     };
                 };
@@ -86,16 +113,10 @@ Exporter(function (isNode) {
        },
        setSubnets: function (subnets) {
              if (Array.isArray(subnets)) {
-                this.subnets = {ipv4:[],ipv6:[]};
-                for (var num in subnets) {
-                    var subnet = subnets[num];
-                    if (/\/(\d+){1,3}$/.test(subnet)) {
-                       if (this.isIPv4(subnet.split('/')[0])) {
-                          this.subnets.ipv4.push(subnet);
-                        } else if (this.isIPv6(subnet.split('/')[0])) {
-                          this.subnets.ipv6.push(subnet);   
-                       };
-                    };
+                var cleaned = this.Clean(subnets,function(ip){return /\/(\d+){1,3}$/.test(ip)});
+                this.subnets = {
+                     ipv4: cleaned.ipv4||[],
+                     ipv6: cleaned.ipv6||[],
                 };
                 return (!!(this.subnets.ipv4.length)||!!(this.subnets.ipv6.length));
              };
