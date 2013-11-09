@@ -58,7 +58,7 @@ Exporter(function (isNode) {
                 var v4 = [],
                     v6 = [],
                     ff = ff||function(x){ return x; };
-                ips.map(function(ip) {
+                ips.forEach(function(ip) {
                     if (/\/(\d+){1,3}$/.test(ip)) {
                        var sp = this.getPrefix(ip);
                        if (this.isIP(sp[0]) && sp[1] && !isNaN(sp[1])) {
@@ -165,7 +165,7 @@ Exporter(function (isNode) {
 */
 function Exporter (fn,plug) {
          // This just seems silly... There HAS to be a better way!
-         var isNode = (typeof process==='object' && process.toString()==='[object process]' && typeof exports!=='undefined');
+         var isNode = (typeof exports !== 'undefined' && this.exports !== exports);
 
          // This also seems like there should be a better way...
          if (isNode) {
