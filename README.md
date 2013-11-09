@@ -7,6 +7,8 @@ This project is [Unlicensed](http://unlicense.org/ "Title").
 In other words, I don't care what you do with it.
 However, if you make something interesting, I would like to check it out.
 
+[![Build Status](https://travis-ci.org/LouisT/inSubnet.png?branch=master)](https://travis-ci.org/LouisT/inSubnet)
+
 Browser example at [http://louist.github.io/inSubnet/example.html](http://louist.github.io/inSubnet/example.html "Title").
 
 Functions:
