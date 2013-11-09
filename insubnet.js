@@ -58,7 +58,7 @@ Exporter(function (isNode) {
                 var v4 = [],
                     v6 = [],
                     ff = ff||function(x){ return x; };
-                ips.map(function(ip) {
+                ips.forEach(function(ip) {
                     if (/\/(\d+){1,3}$/.test(ip)) {
                        var sp = this.getPrefix(ip);
                        if (this.isIP(sp[0]) && sp[1] && !isNaN(sp[1])) {

@@ -39,34 +39,28 @@ function handler (req, res) {
          // Check the version of IP.
          var version = (inSubnet.isIPv4(ip)?'ipv4':'ipv6');
 
-         // Loop all the Subnets for CloudFlare according to version.
-         var BreakException = {};
-         try {
-            cf[version].forEach(function(subnet) {
-
-                // Check for IP in subnet.
-                if (inSubnet.Auto(ip,subnet)) {
+         // You can't break from forEach, use some()!
+         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+         var isCf = cf[version].some(function(subnet) {
+             // Check for IP in subnet.
+             if (inSubnet.Auto(ip,subnet)) {
                    
-                   // Found IP in Subnet, tell the connecting user.
-                   var out = "You are using CloudFlare!<br />CloudFlare IP: "+
-                             "<strong>"+ip+"</strong><br />Your IP: <strong> "+
-                             req.headers['cf-connecting-ip']+"</strong>";
-                   res.writeHead(200,{"content-type":"text/html"});
-                   res.end(out);
-                  
-                   // You can't break from forEach, this is a "hack". 
-                   throw BreakException;
-                };
-            });
+                // Found IP in Subnet, tell the connecting user.
+                var out = "You are using CloudFlare!<br />CloudFlare IP: "+
+                          "<strong>"+ip+"</strong><br />Your IP: <strong> "+
+                          req.headers['cf-connecting-ip']+"</strong>";
+                res.writeHead(200,{"content-type":"text/html"});
+                res.end(out);
 
+                return true;
+             };
+             return false;
+         });
+
+         if (!isCf) {
             // Not using CloudFlare, so tell the user.
             res.writeHead(200,{"content-type":"text/html"});
             res.end("You're not using CloudFlare!<br />Your IP: <strong>"+ip+"</strong>");
-
-          } catch (e) {
-            if (e !== BreakException) {
-               throw e;
-            };
          };
 };
 
