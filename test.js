@@ -91,10 +91,18 @@ function ipTests () {
             assert(!inSubnet.isIPv6('asd::1'),"afd::1 should NOT be an IPv6.");
             pass++;
          } catch (e) { errors.push(e.message); };
+         try {
+            assert(inSubnet.Clean(['127.0.0.1','adf::1']),"Returned Object should be {ipv4:['127.0.0.1'],ipv6:['0adf:0000:0000:0000:0000:0000:0000:0001']}.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
+         try {
+            assert(!inSubnet.Clean(['not an IP','subnet/23','asd::1']),"Returned NOT should be an Object.");
+            pass++;
+         } catch (e) { errors.push(e.message); };
          console.log("[IP Validation Tests] Number of errors found: "+errors.length+" - Tests passed: "+pass+" ("+((pass/(errors.length+pass)*100))+"%)");
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
 };
-function setTests () {
+function arrTests () {
          // CloudFlare Subnets! (https://www.cloudflare.com/ips)
          var subs = ['204.93.240.0/24','204.93.177.0/24','199.27.128.0/21','173.245.48.0/20','103.21.244.0/22',
                      '103.22.200.0/22','103.31.4.0/22','141.101.64.0/18','108.162.192.0/18','190.93.240.0/20',
@@ -146,5 +154,5 @@ function setTests () {
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
 };
 subTests();
-setTests();
+arrTests();
 ipTests();

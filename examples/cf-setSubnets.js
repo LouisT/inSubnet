@@ -15,7 +15,7 @@ var cf = ['204.93.240.0/24','204.93.177.0/24','199.27.128.0/21','173.245.48.0/20
           '2606:4700::/32','2803:f800::/32','2405:b500::/32','2405:8100::/32'];
 
 /*
-  Set the array of subnets to ust with "Validate()".
+  Set the array of subnets to use with "Validate()".
 */
 inSubnet.setSubnets(cf);
 
@@ -41,17 +41,21 @@ function handler (req, res) {
 
          // Check for IP in subnet.
          if (inSubnet.Validate(ip)) {       
+
             // Found IP in Subnet, tell the connecting user.
             var out = "You are using CloudFlare!<br />CloudFlare IP: "+
                       "<strong>"+ip+"</strong><br />Your IP: <strong> "+
                       req.headers['cf-connecting-ip']+"</strong>";
             res.writeHead(200,{"content-type":"text/html"});
             res.end(out);
-         };
 
-         // Not using CloudFlare, so tell the user.
-         res.writeHead(200,{"content-type":"text/html"});
-         res.end("You're not using CloudFlare!<br />Your IP: <strong>"+ip+"</strong>");
+          } else {
+
+            // Not using CloudFlare, so tell the user.
+            res.writeHead(200,{"content-type":"text/html"});
+            res.end("You're not using CloudFlare!<br />Your IP: <strong>"+ip+"</strong>");
+
+         };
 };
 
 // Start listening on a CloudFlare enabled port.

@@ -1,4 +1,4 @@
-inSubnet (v0.0.4)
+inSubnet (v0.0.5)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -14,19 +14,23 @@ Functions:
     Examples in `./examples/` folder.
 
     inSubnet.Auto(ip, subnet[, mask]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns boolean.
+
          Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); // true
                    inSubnet.Auto('1.2.3.4','1.2.0.0','16'); // true
                    inSubnet.Auto('1.4.3.4','1.2.0.0','16'); // false
 
     inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
+
          Examples: See "Auto()" examples.
 
     inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns boolean.
+
          Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); // true
                    inSubnet.IPv6('2400:cb00::123','2400:cb00::','32'); // true
                    inSubnet.IPv6('2500:cb00::123','2400:cb00::','32'); // false
 
     inSubnet.isIP(string) - Check if <string> is an IP address. Works for IPv6 and IPv4. - Returns boolean.
+
          Examples: inSubnet.isIP("127.0.0.1"); // true
                    inSubnet.isIP("afd::1"); // true
                    inSubnet.isIP("asd::1"); // false
@@ -36,26 +40,41 @@ Functions:
                    inSubnet.isIPv4("127.0.0.256"); // false
 
     inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns boolean.
+
          Examples: inSubnet.isIPv6("adf::1"); // true
                    inSubnet.isIPv6("asf::1"); // false
 
     inSubnet.Expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
+
          Examples: inSubnet.Expand("afd::1"); // 0afd:0000:0000:0000:0000:0000:0000:0001
                    inSubnet.Expand("2001:4860:4860::8888"); // 2001:4860:4860:0000:0000:0000:0000:8888
 
     inSubnet.Validate(ip[, subnets]) - Check <ip> or an Array of IPs against an array of subnets set by "setSubnets()".
-                                      If <subnets> is passed, uses "setSubnets()". - Returns boolean or an Array of boolean.
+                                       If <subnets> is passed, uses "setSubnets()". - Returns boolean or an Array of boolean.
+
          Examples: inSubnet.Validate('127.0.0.1',['127.0.0.1/32','adf::1/32']);  // true
                    inSubnet.Validate(['127.0.0.1','127.0.0.2'],['127.0.0.1/32']); // [true,false]
 
-    inSubnet.Filter(array[, subnets]) - Filter an Array of IP addresses against subnets set with "setSubnets()" - Returns an Array of valid IPs.
-                                       If <subnets> is passed, uses "setSubnets()". - Returns IP or false, Array of valid IPs.
+    inSubnet.Filter(array[, subnets]) - Filter an Array of IP addresses against subnets set with "setSubnets()".
+                                        If <subnets> is passed, uses "setSubnets()". - Returns IP or false, Array of valid IPs.
+
          Examples: inSubnet.Filter(['127.0.0.1','adf::1','127.0.0.2'],['127.0.0.1/32','adf::1/32']); // ['127.0.0.1','adf::1']
                    inSubnet.Filter('127.0.0.1',['127.0.0.1/32','adf::1/32']); // 127.0.0.1
                    inSubnet.Filter('127.0.0.2',['127.0.0.1/32','adf::1/32']); // false
 
+    inSubnet.Clean(array[, filter[, sort]]) - Filter an array of IPs/subnets and return only valid IPs. Used in "setSubnets()".
+                                              <filter> is the function to pass to "Array.filter()".
+                                              <sort> is the function to pass to "Array.sort()" - Returns Object or false.
+                                              NOTE: "Array.filter()" and "Array.sort()" are ran LAST after validating and expanding.
+
+         Examples: inSubnet.Clean(['127.0.0.2','127.0.0.29/32']); // {ipv4:['127.0.0.2','127.0.0.29/32'],ipv6:[]}
+                   inSubnet.Clean(['127.0.0.1','adf::1']); // {ipv4:['127.0.0.1'],ipv6:['0adf:0000:0000:0000:0000:0000:0000:0001']}
+                   inSubnet.Clean(['adf::1','::1']); // {ipv4:[],ipv6:['0000:0000:0000:0000:0000:0000:0000:0001','0adf:0000:0000:0000:0000:0000:0000:0001']}
+                   inSubnet.Clean(['not an IP','subnet/23','asd::1']); // false
+
     inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()".
                                    WARNING: Overrides all previous "setSubnets()" calls. - Returns boolean.
+
          Examples: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
                    inSubnet.setSubnets(["not","subnets","subnet/32"]); // false
 
