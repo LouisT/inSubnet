@@ -4,7 +4,7 @@
 */
 Exporter(function (isNode) {
    var proto = {
-       version: '0.0.5',
+       version: '0.0.6',
        Auto: function (ip, subnet, prefix) {
              if (!ip || !subnet) {
                 return false;
@@ -48,7 +48,7 @@ Exporter(function (isNode) {
              return !!(this.Expand(ip));
        },
        __isIPv6: function (ip) {
-             return /^([0-9a-f]{4}|0)(\:([0-9a-f]{4}|0)){7}$/i.test(ip);
+             return /^([0-9a-f]{1,4})(\:([0-9a-f]{1,4})){7}$/i.test(ip);
        },
        isIP: function (ip) {
              return (this.isIPv4(ip)||this.isIPv6(ip));
@@ -101,8 +101,8 @@ Exporter(function (isNode) {
              };
        },
        __Validate: function (ip) {
-             if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?"ipv4":"ipv6"].length))) {
-                var subs = this.subnets[(this.isIPv4(ip)?"ipv4":"ipv6")];
+             if (this.subnets && this.isIP(ip) && (!!(this.subnets[this.isIPv4(ip)?'ipv4':'ipv6'].length))) {
+                var subs = this.subnets[(this.isIPv4(ip)?'ipv4':'ipv6')];
                 for (var num in subs) {
                     if (/\/(\d+){1,3}$/.test(subs[num]) && this.Auto(ip,subs[num])) {
                        return true;
@@ -124,40 +124,39 @@ Exporter(function (isNode) {
        },
        getPrefix: function (subnet, prefix) {
              if (/\/(\d+){1,3}$/.test(subnet)) {
-                try {
-                   var split = subnet.split('/');
-                       subnet = split[0],
-                       prefix = split[1];
-                } catch (e) { }; // Handle the error!?
+                return subnet.split('/');
              };
              return [subnet,prefix];
        },
        toInt: function (ip,mode) {
              switch (mode) {
                     case 6:
-                         return this.Expand(ip).split(":").map(function(x){return parseInt(x,16)});
+                         return this.Expand(ip).split(':').map(function(x){return parseInt(x,16)});
                     case 4:
                     default:
                          return ((ip=ip.split('.'))[0]<<24|ip[1]<<16|ip[2]<<8|ip[3]);
              };
        },
-       Expand: function (ip) {
+       Expand: function (ip, zero) {
              var ip = String(ip);
-             if (ip.indexOf("::") != -1) {
+             if (ip.indexOf('::') != -1) {
                 if (ip.match(/::/g).length > 1) {
                    return false;
                 };
-                var split = ip.split("::"),
-                    res = (split[0]+Array(9-(split[0].split(":").length+split[1].split(":").length)).join(':0000')+':'+split[1]).split(":");
+                var split = ip.split(/::/),
+                    first = (!split[0]?'0':split[0]),
+                    last = (!split[1]?'0':split[1]),
+                    zeros = ':'+(!zero?'0000':'0'),
+                    res = (first+Array(9-(first.split(':').length+last.split(':').length)).join(zeros)+':'+last).split(':');
              };
-             var ip = (res||ip.split(":")).map(function (x) {
-                 return (x.length<4?(new Array(5-x.length).join('0')+x):x);
-             }).join(":");
+             var ip = (res||ip.split(':')).map(function (x) {
+                 return (zero?(/^0+$/.test(x)?0:x.replace(/^0+/,'')):(x.length<4?('0000'+x).slice(-4):x));
+             }).join(':');
              return (this.__isIPv6(ip)?ip:false);
        },
    };
    return Object.create(proto);
-},"inSubnet");
+},'inSubnet');
 
 /*
   Need to make this better. Should check more than just 
