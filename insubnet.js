@@ -145,8 +145,9 @@ Exporter(function (isNode) {
                 };
                 var split = ip.split(/::/),
                     first = (!split[0]?'0':split[0]),
+                    last = (!split[1]?'0':split[1]),
                     zeros = ':'+(!zero?'0000':'0'),
-                    res = (first+Array(9-(first.split(':').length+split[1].split(':').length)).join(zeros)+':'+split[1]).split(':');
+                    res = (first+Array(9-(first.split(':').length+last.split(':').length)).join(zeros)+':'+last).split(':');
              };
              var ip = (res||ip.split(':')).map(function (x) {
                  return (zero?(/^0+$/.test(x)?0:x.replace(/^0+/,'')):(x.length<4?('0000'+x).slice(-4):x));
