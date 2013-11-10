@@ -1,4 +1,4 @@
-inSubnet (v0.0.5)
+inSubnet (v0.0.6)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -6,6 +6,7 @@ Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
 This project is [Unlicensed](http://unlicense.org/ "Title").
 In other words, I don't care what you do with it.
 However, if you make something interesting, I would like to check it out.
+I'm also accepting pull requests.
 
 [![Build Status](https://travis-ci.org/LouisT/inSubnet.png?branch=master)](https://travis-ci.org/LouisT/inSubnet)
 
@@ -15,17 +16,17 @@ Functions:
 ------
     Examples in `./examples/` folder.
 
-    inSubnet.Auto(ip, subnet[, mask]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns boolean.
+    inSubnet.Auto(ip, subnet[, prefix length]) - Check to find out if <ip> is in <subnet>. Works with IPv4 and IPv6. Returns boolean.
 
          Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); // true
                    inSubnet.Auto('1.2.3.4','1.2.0.0','16'); // true
                    inSubnet.Auto('1.4.3.4','1.2.0.0','16'); // false
 
-    inSubnet.IPv4(ip, subnet[, mask]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
+    inSubnet.IPv4(ip, subnet[, prefix length]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
 
          Examples: See "Auto()" examples.
 
-    inSubnet.IPv6(ip, subnet[, mask]) - Same as "Auto()" but for IPv6 only. - Returns boolean.
+    inSubnet.IPv6(ip, subnet[, prefix length]) - Same as "Auto()" but for IPv6 only. - Returns boolean.
 
          Examples: inSubnet.IPv6('2400:cb00::123','2400:cb00::/32'); // true
                    inSubnet.IPv6('2400:cb00::123','2400:cb00::','32'); // true
@@ -46,10 +47,13 @@ Functions:
          Examples: inSubnet.isIPv6("adf::1"); // true
                    inSubnet.isIPv6("asf::1"); // false
 
-    inSubnet.Expand(ipv6) - Expands an IPv6. - Returns IPv6 or false.
+    inSubnet.Expand(ipv6[, zero]) - Expands an IPv6.
+                                    If <zero> is true, use single zeros. - Returns IPv6 or false.
 
          Examples: inSubnet.Expand("afd::1"); // 0afd:0000:0000:0000:0000:0000:0000:0001
                    inSubnet.Expand("2001:4860:4860::8888"); // 2001:4860:4860:0000:0000:0000:0000:8888
+                   inSubnet.Expand("afd::1",true); // afd:0:0:0:0:0:0:1
+                   inSubnet.Expand("asd::1"); // false
 
     inSubnet.Validate(ip[, subnets]) - Check <ip> or an Array of IPs against an array of subnets set by "setSubnets()".
                                        If <subnets> is passed, uses "setSubnets()". - Returns boolean or an Array of boolean.
@@ -86,3 +90,11 @@ TODO:
 - [ ] Write a better README! (Is this happening?)
 - [x] Write a simple HTTP example for CloudFlare. (Look in ./examples/cloudflare.js)
 - [ ] Make "Exporter" better.
+
+Functionality Requests:
+------
+- [ ] *Add support for IPv6 dotted notation. (::127.0.0.1) - This isn't important to me, if it is for you, fork it!
+- [ ] *Add support for more IPv4 notations. (192.11010115, 3232235587) - This isn't important to me, if it is for you, fork it!
+
+    *I probably wont get to this any time soon... Sorry for those who need/want it. (Again, you can fork!)
+

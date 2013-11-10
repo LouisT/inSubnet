@@ -89,7 +89,7 @@ function ipTests () {
             pass++;
          } catch (e) { errors.push(e.message); };
          try {
-            assert(!inSubnet.isIPv6('asd::1'),"afd::1 should NOT be an IPv6.");
+            assert(!inSubnet.isIPv6('asd::1'),"asd::1 should NOT be an IPv6.");
             pass++;
          } catch (e) { errors.push(e.message); };
          try {
@@ -156,6 +156,6 @@ function arrTests () {
          errors.forEach(function(err) { console.log('\033[1;31mERROR:\033[0m '+err); });
          return !(errors.length);
 };
-if (!subTests() || !arrTests() || !ipTests()) {
+if ([subTests(),arrTests(),ipTests()].indexOf(false) !== -1) {
    process.exit(1);
 };
