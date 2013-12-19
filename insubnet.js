@@ -4,7 +4,7 @@
 */
 Exporter(function (isNode) {
    var proto = {
-       version: '0.0.6',
+       version: '0.0.7',
        Auto: function (ip, subnet, prefix) {
              if (!ip || !subnet) {
                 return false;
