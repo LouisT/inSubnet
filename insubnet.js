@@ -80,8 +80,8 @@ Exporter(function (isNode) {
              };
              return false;
        },
-       Filter: function (ip, subnets, update) {
-             if (!('subnets' in this) || update) {
+       Filter: function (ip, subnets, noupdate) {
+             if (!('subnets' in this) || !noupdate) {
                 this.setSubnets(subnets);
              };
              if (Array.isArray(ip)){ 
@@ -92,8 +92,8 @@ Exporter(function (isNode) {
                 return (this.__Validate(ip)?ip:false);
              };
        },
-       Validate: function (ip, subnets, update) {
-             if (!('subnets' in this) || update) {
+       Validate: function (ip, subnets, noupdate) {
+             if (!('subnets' in this) || !noupdate) {
                 this.setSubnets(subnets);
              };
              if (Array.isArray(ip)){
