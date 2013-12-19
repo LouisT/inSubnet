@@ -1,4 +1,4 @@
-inSubnet (v0.0.6)
+inSubnet (v0.0.7)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -55,17 +55,22 @@ Functions:
                    inSubnet.Expand("afd::1",true); // afd:0:0:0:0:0:0:1
                    inSubnet.Expand("asd::1"); // false
 
-    inSubnet.Validate(ip[, subnets]) - Check <ip> or an Array of IPs against an array of subnets set by "setSubnets()".
-                                       If <subnets> is passed, uses "setSubnets()". - Returns boolean or an Array of boolean.
+    inSubnet.Validate(ip[, subnets[, update]]) - Check <ip> or an Array of IPs against an array of subnets set by "setSubnets()".
+                                       If <subnets> is passed, uses "setSubnets()". If "update" is true, override previous "setSubnets()" call.
+                                       Returns boolean or an Array of boolean.
 
          Examples: inSubnet.Validate('127.0.0.1',['127.0.0.1/32','adf::1/32']);  // true
-                   inSubnet.Validate(['127.0.0.1','127.0.0.2'],['127.0.0.1/32']); // [true,false]
+                   inSubnet.Validate(['127.0.0.1','127.0.0.2','adf::1'],['127.0.0.1/32']); // [true,false,true] - Uses previously set subnets.
+                   inSubnet.Validate(['127.0.0.1','127.0.0.2','adf::1'],['127.0.0.1/32'],true); // [true,false,false] - Overwrite previously set subnets.
 
-    inSubnet.Filter(array[, subnets]) - Filter an Array of IP addresses against subnets set with "setSubnets()".
-                                        If <subnets> is passed, uses "setSubnets()". - Returns IP or false, Array of valid IPs.
+    inSubnet.Filter(array[, subnets[, update]]) - Filter an Array of IP addresses against subnets set with "setSubnets()".
+                                        If <subnets> is passed, uses "setSubnets()". If "update" is true, override previous "setSubnets()" call.
+                                        Returns IP or false, Array of valid IPs.
 
          Examples: inSubnet.Filter(['127.0.0.1','adf::1','127.0.0.2'],['127.0.0.1/32','adf::1/32']); // ['127.0.0.1','adf::1']
                    inSubnet.Filter('127.0.0.1',['127.0.0.1/32','adf::1/32']); // 127.0.0.1
+                   inSubnet.Filter('adf::1',['127.0.0.1/32']); // true - Uses previously set subnets.
+                   inSubnet.Filter('adf::1',['127.0.0.1/32'],true); // false - Overwrites previously set subnets.
                    inSubnet.Filter('127.0.0.2',['127.0.0.1/32','adf::1/32']); // false
 
     inSubnet.Clean(array[, filter[, sort]]) - Filter an array of IPs/subnets and return only valid IPs. Used in "setSubnets()".
@@ -78,7 +83,7 @@ Functions:
                    inSubnet.Clean(['adf::1','::1']); // {ipv4:[],ipv6:['0000:0000:0000:0000:0000:0000:0000:0001','0adf:0000:0000:0000:0000:0000:0000:0001']}
                    inSubnet.Clean(['not an IP','subnet/23','asd::1']); // false
 
-    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()".
+    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()" and "Filter()".
                                    WARNING: Overrides all previous "setSubnets()" calls. - Returns boolean.
 
          Examples: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
