@@ -144,7 +144,7 @@ function arrTests () {
             pass++;
          } catch (e) { errors.push(e.message); };
          try {
-            var ret = inSubnet.Filter(['127.0.0.1','adf::1','127.0.0.2'],['127.0.0.1/32','adf::1/32'],true).toString();
+            var ret = inSubnet.Filter(['127.0.0.1','adf::1','127.0.0.2'],['127.0.0.1/32','adf::1/32']).toString();
             assert(ret === '127.0.0.1,adf::1',"Returned array should be ['127.0.0.1','adf::1'].");
             pass++;
          } catch (e) { errors.push(e.message); };
