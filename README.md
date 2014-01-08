@@ -103,3 +103,7 @@ Functionality Requests:
 
     *I probably wont get to this any time soon... Sorry for those who need/want it. (Again, you can fork!)
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LouisT/insubnet/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
