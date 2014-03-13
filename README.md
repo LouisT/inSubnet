@@ -102,8 +102,3 @@ Functionality Requests:
 - [ ] *Add support for more IPv4 notations. (192.11010115, 3232235587) - This isn't important to me, if it is for you, fork it!
 
     *I probably wont get to this any time soon... Sorry for those who need/want it. (Again, you can fork!)
-
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LouisT/insubnet/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
