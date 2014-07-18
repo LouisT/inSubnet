@@ -1,4 +1,4 @@
-inSubnet (v0.0.7)
+inSubnet (v0.0.8)
 ======
 
 Install: npm install [insubnet](https://npmjs.org/package/insubnet "Title")
@@ -12,6 +12,15 @@ I'm also accepting pull requests.
 
 Browser example at [http://louist.github.io/inSubnet/example.html](http://louist.github.io/inSubnet/example.html "Title").
 
+[IPv4 Address Notation Support](http://en.wikipedia.org/wiki/IPv4#Address_representations "Title"): 
+------
+- [x] Dotted decimal (127.0.0.1)
+- [ ] Dotted hexadecimal (0xC0.0x00.0x02.0xEB)
+- [ ] Dotted octal (0301.0250.0002.0353)
+- [ ] Hexadecimal (0xC00002EB)
+- [x] Decimal (3221226219)
+- [ ] Octal (030000001353)
+
 Functions:
 ------
     Examples in `./examples/` folder.
@@ -20,11 +29,19 @@ Functions:
 
          Examples: inSubnet.Auto('1.2.3.4','1.2.0.0/16'); // true
                    inSubnet.Auto('1.2.3.4','1.2.0.0','16'); // true
+                   inSubnet.Auto('16909060','1.2.0.0/16'); // true
+                   inSubnet.Auto('16909060','16908288/16'); // true
+                   inSubnet.Auto('2400:cb00::123','2400:cb00::/32'); // true
                    inSubnet.Auto('1.4.3.4','1.2.0.0','16'); // false
 
     inSubnet.IPv4(ip, subnet[, prefix length]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
 
          Examples: See "Auto()" examples.
+
+    inSubnet.IPv4Dec(decimal, subnet[, prefix length]) - Same as "Auto()" but for IPv4 only. - Returns boolean.
+
+         Examples: See "Auto()" examples.
+
 
     inSubnet.IPv6(ip, subnet[, prefix length]) - Same as "Auto()" but for IPv6 only. - Returns boolean.
 
@@ -41,6 +58,10 @@ Functions:
     inSubnet.isIPv4(string) - Same as "isIP()" but for IPv4 only. - Returns boolean.
          Examples: inSubnet.isIPv4("127.0.0.1"); // true
                    inSubnet.isIPv4("127.0.0.256"); // false
+
+    inSubnet.isDecimal(string) - Same as "isIP()" but for IPv4 decimal notation only. - Returns boolean.
+         Examples: inSubnet.isDecimal("16909060"); // true
+                   inSubnet.isDecimal("a16909060"); // false
 
     inSubnet.isIPv6(string) - Same as "isIP()" but for IPv6 only. - Returns boolean.
 
@@ -60,10 +81,11 @@ Functions:
                                        Returns boolean or an Array of boolean.
 
          Examples: inSubnet.Validate('127.0.0.1',['127.0.0.1/32','adf::1/32']);  // true
-                   inSubnet.Validate(['127.0.0.1','127.0.0.2','adf::1'],['127.0.0.1/32'],true); // [true,false,true] - Uses previously set subnets.
+                   inSubnet.Validate('2130706433'); // true - Uses previously set subnets.
+                   inSubnet.Validate(['127.0.0.1','127.0.0.2','adf::1']); // [true,false,true] - Uses previously set subnets.
                    inSubnet.Validate(['127.0.0.1','127.0.0.2','adf::1'],['127.0.0.1/32']); // [true,false,false] - Overwrite previously set subnets.
 
-    inSubnet.Filter(array[, subnets[, no update]]) - Filter an Array of IP addresses against subnets set with "setSubnets()".
+    *inSubnet.Filter(array[, subnets[, no update]]) - Filter an Array of IP addresses against subnets set with "setSubnets()".
                                         If <subnets> is passed, uses "setSubnets()". If <no update> is true, do not call "setSubnets()".
                                         Returns IP or false, Array of valid IPs.
 
@@ -73,7 +95,7 @@ Functions:
                    inSubnet.Filter('adf::1',['127.0.0.1/32']); // false - Overwrite previously set subnets.
                    inSubnet.Filter('127.0.0.2',['127.0.0.1/32','adf::1/32']); // false
 
-    inSubnet.Clean(array[, filter[, sort]]) - Filter an array of IPs/subnets and return only valid IPs. Used in "setSubnets()".
+    *inSubnet.Clean(array[, filter[, sort]]) - Filter an array of IPs/subnets and return only valid IPs. Used in "setSubnets()".
                                               <filter> is the function to pass to "Array.filter()".
                                               <sort> is the function to pass to "Array.sort()" - Returns Object or false.
                                               NOTE: "Array.filter()" and "Array.sort()" are ran LAST after validating and expanding.
@@ -83,11 +105,13 @@ Functions:
                    inSubnet.Clean(['adf::1','::1']); // {ipv4:[],ipv6:['0000:0000:0000:0000:0000:0000:0000:0001','0adf:0000:0000:0000:0000:0000:0000:0001']}
                    inSubnet.Clean(['not an IP','subnet/23','asd::1']); // false
 
-    inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()" and "Filter()".
+    *inSubnet.setSubnets(subnets) - Set a list of subnets for "Validate()" and "Filter()".
                                    WARNING: Overrides all previous "setSubnets()" calls. - Returns boolean.
 
          Examples: inSubnet.setSubnets(["192.168.1.0/30","::1/32"]); // true
                    inSubnet.setSubnets(["not","subnets","subnet/32"]); // false
+
+    *Only supports IPv4 dotted decimal notation and IPv6.
 
 TODO:
 ------
@@ -98,12 +122,7 @@ TODO:
 
 Functionality Requests:
 ------
-- [ ] *Add support for IPv6 dotted notation. (::127.0.0.1) - This isn't important to me, if it is for you, fork it!
-- [ ] *Add support for more IPv4 notations. (192.11010115, 3232235587) - This isn't important to me, if it is for you, fork it!
+- [ ] *Add support for IPv6 dotted notation. (::127.0.0.1)
+- [ ] Add support for more IPv4 notations. See "IPv4 Address Notation Support" above.
 
-    *I probably wont get to this any time soon... Sorry for those who need/want it. (Again, you can fork!)
-
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LouisT/insubnet/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+    *I probably wont get to this any time soon... Sorry for those who need/want it. Please feel free to submit a pull request.
